@@ -202,7 +202,8 @@ impl ContinuousCDF<f64, f64> for Empirical {
     }
 }
 
-#[cfg(all(test, feature = "nightly"))]
+//#[cfg(all(test, feature = "nightly"))]
+#[cfg(test)]
 mod tests {
     use super::*;
     #[test]
@@ -231,6 +232,12 @@ mod tests {
         // because of rounding errors, this doesn't hold in general
         // due to the mean and variance being calculated in a streaming way
         assert_eq!(unchanged, empirical);
+
+        eprintln!(
+            "\n{empirical:?}, mean = {:?}, var = {:?}\n",
+            empirical.mean(),
+            empirical.variance()
+        );
     }
 
     #[test]
@@ -256,8 +263,14 @@ mod tests {
         let unchanged = empirical.clone();
         empirical.add(2.0);
         empirical.remove(2.0);
-         //because of rounding errors, this doesn't hold in general
-         //due to the mean and variance being calculated in a streaming way
+        // because of rounding errors, this doesn't hold in general
+        // due to the mean and variance being calculated in a streaming way
         assert_eq!(unchanged, empirical);
+
+        eprintln!(
+            "\n{empirical:?}, mean = {:?}, var = {:?}\n",
+            empirical.mean(),
+            empirical.variance()
+        );
     }
 }
